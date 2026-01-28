@@ -2,6 +2,7 @@ const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAllSports = async (req, res) => {
+    //#swagger.tags=['Sports']
     const result = await mongodb.getDatabase().db().collection('sports').find();
     result.toArray().then((sports) => {
         res.setHeader('Content-Type', 'application/json');
@@ -10,6 +11,7 @@ const getAllSports = async (req, res) => {
 };
 
 const getSingleSport = async (req, res) => {
+    //#swagger.tags=['Sports']
     const sportsId = new ObjectId(req.params.id);
     const result = await mongodb.getDatabase().db().collection('sports').find({ _id: sportsId });
     result.toArray().then((sports) => {
@@ -19,6 +21,7 @@ const getSingleSport = async (req, res) => {
 };
 
 const updateSport = async (req, res) => {
+    //#swagger.tags=['Sports']
     const sportsId = new ObjectId(req.params.id);
     const sport = {
         sport: req.body.sport,
@@ -38,6 +41,7 @@ const updateSport = async (req, res) => {
 }
 
 const createSport = async (req, res) => {
+    //#swagger.tags=['Sports']
     const sport = {
         sport: req.body.sport,
         type: req.body.type,
@@ -56,6 +60,7 @@ const createSport = async (req, res) => {
 }
 
 const deleteSport = async (req, res) => {
+    //#swagger.tags=['Sports']
     const sportsId = new ObjectId(req.params.id);
     const response = await mongodb.getDatabase().db().collection('sports').deleteOne({ _id: sportsId });
     if (response.deletedCount > 0) {
