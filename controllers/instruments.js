@@ -18,7 +18,47 @@ const getSingleInstrument = async (req, res) => {
     })
 };
 
+const updateInstrument = async (req, res) => {
+    const instrumentId = new ObjectId(req.params.id);
+    const instrument = {
+        instrument: req.body.instrument,
+        type: req.body.type
+    }
+    const response = await mongodb.getDatabase().db().collection('instruments').replaceOne({ _id: instrumentId }, instrument);
+    if (response.modifiedCount > 0) {
+        res.status(204).send();
+    } else {
+        res.status(500).json(response.error || 'Some error occurred while updating the instrument.');
+    }
+}
+
+const createInstrument = async (req, res) => {
+    const instrument = {
+        instrument: req.body.instrument,
+        type: req.body.type
+    }
+    const response = await mongodb.getDatabase().db().collection('instruments').insertOne(instrument);
+    if (response.acknowledged > 0) {
+        res.status(204).send();
+    } else {
+        res.status(500).json(response.error || 'Some error occurred while creating the instrument.');
+    }
+}
+
+const deleteInstrument = async (req, res) => {
+    const instrumentId = new ObjectId(req.params.id);
+    const response = await mongodb.getDatabase().db().collection('instruments').deleteOne({ _id: instrumentId });
+    if (response.deletedCount > 0) {
+        res.status(204).send();
+    } else {
+        res.status(500).json(response.error || 'Some error occurred while deleting the instrument.');
+    }
+}
+
 module.exports = {
     getAllInstruments,
-    getSingleInstrument
+    getSingleInstrument,
+    updateInstrument,
+    createInstrument,
+    deleteInstrument
 }
