@@ -1,12 +1,19 @@
 const router = require('express').Router();
-const homeController = require('../controllers/home');
+const passport = require('passport');
 
 router.use('/', require('./swagger'));
-
-router.get('/', homeController.homeRoute);
 
 router.use('/sports', require('./sports'));
 
 router.use('/instruments', require('./instruments'));
+
+router.get('/login', passport.authenticate('github'), (req, res) => {});
+
+router.get('/logout', function(req, res, next) {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+});
 
 module.exports = router;
