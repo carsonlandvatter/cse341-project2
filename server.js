@@ -6,6 +6,8 @@ const passport = require('passport');
 const session = require('express-session');
 const GitHubStrategy = require('passport-github2').Strategy;
 const cors = require('cors');
+
+app.set('trust proxy', 1)
 app
     .use(bodyParser.json())
     .use(session({
